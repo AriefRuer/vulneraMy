@@ -20,3 +20,5 @@ recover_no_assistant.sh
 
 # Documentation / notes - kept out of the deployed repo (they don't affect the build)
 *.md
+# ...except the current handoff, so teammates (and their agents) get project context.
+!HANDOFF.md

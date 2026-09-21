@@ -14,8 +14,10 @@ interface ProviderEnv {
 export function env(): ProviderEnv | null {
   const apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY || ''
   if (!apiKey) return null
-  const baseUrl = (process.env.LLM_BASE_URL || 'https://api.openai.com/v1/chat/completions').trim()
-  const model = process.env.LLM_MODEL || 'gpt-4o-mini'
+  // Defaults target OpenRouter + DeepSeek so the app works with ONLY LLM_API_KEY
+  // set. Override LLM_BASE_URL / LLM_MODEL to use a different provider/model.
+  const baseUrl = (process.env.LLM_BASE_URL || 'https://openrouter.ai/api/v1/chat/completions').trim()
+  const model = process.env.LLM_MODEL || 'deepseek/deepseek-v4-flash-0731'
   return { apiKey, baseUrl, model }
 }
 
