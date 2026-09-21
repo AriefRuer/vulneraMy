@@ -1,0 +1,5 @@
+# Keep serverless function bundles lean - exclude dashboard junk from api/
+node_modules
+.vscode
+.vercel
+*.log

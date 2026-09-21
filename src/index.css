@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/* ─── VulneraMy Design System (Figma: node-id=805-46) ─── */
+/* Page bg #F8FAFB · Card bg #FFFFFF · Card stroke #ECEEF6 · Sidebar #1A1A1A
+   Accent #1A2B88 · Muted icon #7B7B7B · Type: Alexandria + Gantari */
+
+@theme {
+  --font-sans: 'Alexandria', system-ui, sans-serif;
+  --font-mono: 'Gantari', system-ui, monospace;
+
+  /* Surfaces */
+  --color-bg: #f8fafb;
+  --color-card: #ffffff;
+  --color-card-stroke: #eceef6;
+  --color-sidebar: #1a1a1a;
+
+  /* Accents */
+  --color-accent: #1a2b88;
+  --color-accent-light: #e6e9f7;
+  --color-icon: #7b7b7b;
+
+  /* Text — black-first, per feedback */
+  --color-text-primary: #000000;
+  --color-text-secondary: #1a1a1a;
+  --color-text-tertiary: #4a4a4a;
+
+  /* Semantic */
+  --color-success: #1e8e3e;
+  --color-success-bg: #e6f4ea;
+  --color-danger: #c62828;
+  --color-danger-bg: #fdecea;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e8ebf3 25%, #d8ddec 50%, #e8ebf3 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* Chart tooltip */
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Alexandria', sans-serif;
+  line-height: 1.5;
+  z-index: 50;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Chart axes */
+.chart-axis text {
+  font-family: 'Alexandria', sans-serif;
+  font-size: 11px;
+  fill: #7b7b7b;
+}
+.chart-axis line,
+.chart-axis path {
+  stroke: #eceef6;
+}
+.chart-grid line {
+  stroke: #eceef6;
+  stroke-dasharray: 2,2;
+}

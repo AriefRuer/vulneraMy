@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build output (Vercel rebuilds these; the offline file is delivered separately)
+dist/
+dist-no-assistant/
+
+# Env / secrets - NEVER commit real API keys
+.env
+.env.local
+.env.*.local
+
+# Vercel / misc
+.vercel/
+*.log
+.DS_Store
+
+# Local build helper (not a doc; not needed in the deployed repo)
+recover_no_assistant.sh
+
+# Documentation / notes - kept out of the deployed repo (they don't affect the build)
+*.md
