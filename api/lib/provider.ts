@@ -1,5 +1,5 @@
-import type { Facts } from './analytics'
-import type { VizEntry } from './chartContext'
+import type { Facts } from './analytics.js'
+import type { VizEntry } from './chartContext.js'
 
 // LLM provider wrapper. The API key is NEVER in the bundle - it is read from
 // the server environment only (Vercel project env vars). Provider-agnostic:

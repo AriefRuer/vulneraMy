@@ -3,9 +3,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 // ESM. A JSON import therefore requires an import attribute, or Node throws
 // ERR_IMPORT_ATTRIBUTE_MISSING at load time (crashing the function 100%).
 import data from '../public/dashboard_data.json' with { type: 'json' }
-import { getChartContext } from './lib/chartContext'
-import { computeFacts } from './lib/analytics'
-import { buildMessages, callProvider, env } from './lib/provider'
+// Native ESM requires explicit .js extensions on relative imports (the compiled
+// output is .js), or Node throws ERR_MODULE_NOT_FOUND at load time.
+import { getChartContext } from './lib/chartContext.js'
+import { computeFacts } from './lib/analytics.js'
+import { buildMessages, callProvider, env } from './lib/provider.js'
 
 // POST /api/assistant { visualizationId, question }
 // Graceful error handling per plan §53: the client is NEVER shown a raw status
