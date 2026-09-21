@@ -1,5 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import data from '../public/dashboard_data.json'
+// The project is ESM ("type": "module"), so Vercel loads this function as native
+// ESM. A JSON import therefore requires an import attribute, or Node throws
+// ERR_IMPORT_ATTRIBUTE_MISSING at load time (crashing the function 100%).
+import data from '../public/dashboard_data.json' with { type: 'json' }
 import { getChartContext } from './lib/chartContext'
 import { computeFacts } from './lib/analytics'
 import { buildMessages, callProvider, env } from './lib/provider'
