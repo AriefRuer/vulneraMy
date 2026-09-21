@@ -13,6 +13,7 @@ import { buildMessages, callProvider, env } from './lib/provider.js'
 // Graceful error handling per plan §53: the client is NEVER shown a raw status
 // code. Every failure maps to a short, deterministic, calm `limitation` string.
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  try {
   if (req.method !== 'POST') {
     return res.status(405).json({
       status: 'error',
@@ -79,10 +80,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ...(facts.comparison ? [{ type: 'calculated' as const, text: facts.comparison }] : []),
     ],
   })
+  } catch (err) {
+    // Last-resort guard: any unexpected error still returns calm JSON (never a
+    // stack trace or raw 500), so the browser shows friendly copy / offline mode.
+    console.error('[assistant] unexpected handler error:', err instanceof Error ? err.message : String(err))
+    return res.status(200).json({ status: 'error', limitation: "I couldn't analyse this chart right now. Please try again." })
+  }
 }
 
 // Simple deterministic intent -> facts pick, used when no LLM is configured.
-function pickAnswer(dataset: string, facts: { value: string | null; trend: string | null; top: string | null; bottom: string | null; comparison: string | null }, q: string): string | null {
+function pickAnswer(dataset: string, facts: { value: string | null; trend: string | null; source: string | null; top: string | null; bottom: string | null; comparison: string | null }, q: string): string | null {
   // Honest refusal: causal / normative questions are outside what a
   // deterministic answerer can assert. Never force an irrelevant value onto them.
   if (/\b(why|who caused|what caused|because|the reason|cause|recommend|should|ought|fix|advise|blame)\b/i.test(q)) {

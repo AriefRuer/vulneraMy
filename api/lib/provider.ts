@@ -81,20 +81,38 @@ export async function callProvider(messages: { role: string; content: string }[]
     try {
       const res = await fetch(p.baseUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${p.apiKey}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${p.apiKey}`,
+          // OpenRouter attribution headers (harmlessly ignored by other
+          // providers) so the app is identified in the OpenRouter dashboard.
+          'HTTP-Referer': process.env.OPENROUTER_REFERER || 'https://vulnera-my.vercel.app',
+          'X-Title': process.env.OPENROUTER_TITLE || 'VulneraMy Employment Analytics',
+        },
         body: JSON.stringify({ model: p.model, messages, max_tokens: 500, temperature: 0.3 }),
         signal: controller.signal,
       })
       clearTimeout(timer)
       // Transient server-side failure: retry once if budget allows.
-      if (res.status === 429 || (res.status >= 500 && res.status < 600)) continue
-      if (!res.ok) return null // 4xx won't succeed on retry
+      if (res.status === 429 || (res.status >= 500 && res.status < 600)) {
+        console.error(`[assistant] LLM transient ${res.status} (model=${p.model}); ${(await res.text().catch(() => '')).slice(0, 200)}`)
+        continue
+      }
+      if (!res.ok) {
+        // 4xx won't succeed on retry. Logged SERVER-SIDE ONLY (never sent to the
+        // browser) to diagnose a bad key / wrong model / wrong base URL.
+        console.error(`[assistant] LLM error ${res.status} (model=${p.model}); ${(await res.text().catch(() => '')).slice(0, 200)}`)
+        return null
+      }
       const body = (await res.json()) as { choices?: { message?: { content?: string } }[] }
       const content = body.choices?.[0]?.message?.content
-      return typeof content === 'string' && content.trim() ? content.trim() : null
-    } catch {
+      if (typeof content === 'string' && content.trim()) return content.trim()
+      console.error('[assistant] LLM returned empty content')
+      return null
+    } catch (err) {
       clearTimeout(timer)
       // Network error or abort: loop will retry only if budget remains.
+      console.error('[assistant] LLM call failed:', err instanceof Error ? err.message : String(err))
     }
   }
   return null

@@ -9,6 +9,14 @@ export interface AskOutcome {
   mode: 'online' | 'offline'
 }
 
+// Build-time isolation switch. Set VITE_OFFLINE_ONLY=true to build the PURE
+// OFFLINE artifact: Booky answers only from the bundled deterministic answerer
+// and the client never references or calls /api/assistant. This is the
+// double-click index.html version, fully decoupled from Vercel. Left false, the
+// client tries the hosted LLM first and gracefully falls back offline (the
+// Vercel version).
+const OFFLINE_ONLY = (import.meta.env.VITE_OFFLINE_ONLY ?? 'false') === 'true'
+
 const TIMEOUT_MS = 9000
 
 async function tryOnline(vizId: string, question: string): Promise<AskOutcome> {
@@ -41,6 +49,10 @@ async function tryOnline(vizId: string, question: string): Promise<AskOutcome> {
 }
 
 export async function askAssistant(vizId: string, question: string): Promise<AskOutcome> {
+  // Pure-offline build: never touch the network; answer from bundled data only.
+  if (OFFLINE_ONLY) {
+    return { result: askOffline(vizId, question), mode: 'offline' }
+  }
   const online = await tryOnline(vizId, question).catch(() => ({
     result: { status: 'error' } as AssistantResult,
     mode: 'offline' as const,

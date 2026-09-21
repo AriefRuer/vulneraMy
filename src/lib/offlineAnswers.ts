@@ -205,6 +205,32 @@ function factsSdg12b1(): Facts {
   }
 }
 
+function factsOdFlows(): Facts {
+  const arr = rows('od_flows')
+  if (!arr.length) return EMPTY
+  const total = arr.reduce((s, r) => s + num(r, 'tourists_k'), 0)
+  const intraTotal = arr.filter((r) => Number(r.is_intra_state) === 1).reduce((s, r) => s + num(r, 'tourists_k'), 0)
+  const inter = arr.filter((r) => Number(r.is_intra_state) !== 1 && Number.isFinite(num(r, 'tourists_k')))
+  const byDest = new Map<string, number>(); const byOrigin = new Map<string, number>()
+  inter.forEach((r) => {
+    const d = String(r.dest_label ?? r.dest_state_code ?? ''); const o = String(r.origin_label ?? r.origin_state_code ?? '')
+    byDest.set(d, (byDest.get(d) ?? 0) + num(r, 'tourists_k'))
+    byOrigin.set(o, (byOrigin.get(o) ?? 0) + num(r, 'tourists_k'))
+  })
+  const topCorridor = [...inter].sort((a, b) => num(b, 'tourists_k') - num(a, 'tourists_k'))[0]
+  const topDest = [...byDest.entries()].sort((a, b) => b[1] - a[1])[0]
+  const topOrigin = [...byOrigin.entries()].sort((a, b) => b[1] - a[1])[0]
+  const corridor = topCorridor ? `${String(topCorridor.origin_label ?? topCorridor.origin_state_code ?? '')} to ${String(topCorridor.dest_label ?? topCorridor.dest_state_code ?? '')}` : ''
+  return {
+    value: topCorridor ? `Among 2024 inter-state tourist flows, the largest corridor is ${corridor}, about ${fmtK(num(topCorridor, 'tourists_k'))} tourists (${num(topCorridor, 'share_of_all_flows_pct').toFixed(1)}% of all flows).` : null,
+    trend: null,
+    source: 'DOSM Domestic Tourism Survey 2024 - origin-to-destination tourist flows.',
+    top: topDest ? `The top destination for out-of-state tourists is ${topDest[0]} (~${fmtK(topDest[1])} inbound).` : null,
+    bottom: topOrigin ? `The largest source of out-of-state trips is ${topOrigin[0]} (~${fmtK(topOrigin[1])} outbound).` : null,
+    comparison: total ? `About ${((intraTotal / total) * 100).toFixed(0)}% of recorded tourist volume stays within the home state; the rest crosses state lines.` : null,
+  }
+}
+
 // ─── main entry ─────────────────────────────────────────────────────────
 const FACTS_FN: Record<string, () => Facts> = {
   national_employment: factsNationalEmployment,
@@ -212,6 +238,7 @@ const FACTS_FN: Record<string, () => Facts> = {
   state_revenue: factsStateRevenue,
   state_panel: factsStatePanel,
   arrivals: factsArrivals,
+  od_flows: factsOdFlows,
   allocation: factsAllocation,
   wages_2024: factsWages,
   wages_trend: factsWagesTrend,
