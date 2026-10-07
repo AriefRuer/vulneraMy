@@ -1,11 +1,12 @@
-# VulneraMy:  Measuring Employment Stability in Malaysian Tourism
+# VulneraMy: Measuring Employment Stability in Malaysian Tourism
 
 VulneraMy is an interactive analytics dashboard built for the DOSM Datathon 2026. Its
-argument is easy to say and easy to miss. Malaysia's official headline number says
-tourism supports about 3.5 million jobs. That number is true and stable throughout years, but it hides how unstable
-tourism work really is. When you isolate only the jobs that genuinely depend on
-visitors, four in five of them disappeared at the pandemic trough, while the headline
-measure recorded a fall of about one job in twenty.
+argument is easy to say and easy to miss. **Malaysia's official headline number says
+tourism supports about 3.5 million jobs**. That number is true and stable throughout
+years, but it hides how unstable tourism work really is. When you isolate only the
+jobs that genuinely depend on visitors, four in five of them disappeared at the
+pandemic trough, while the headline measure recorded a fall of about one job in
+twenty.
 
 The dashboard follows that argument across seven pages and ends with a decision tool
 rather than a stack of charts. It ships in two forms: a hosted web app on Vercel, and a
@@ -65,21 +66,21 @@ argument and no two pages can disagree about a number.
 | Decent Work | Are these jobs any good once you look at what they pay? |
 | SDG Alignment | What can honestly be claimed against the official UN tourism indicators? |
 
-## The findings behind thosepages
+## The findings behind those pages
 
-Five findings carry the argument, and every number below is computed from the bundled
+Six findings carry the argument, and every number below is computed from the bundled
 data and traceable to a named DOSM source table.
 
 **The headline understates the shock fourteen-fold.** From the same two published
-tables over the same decade, headline employment fell 5.5 percent between 2019 and
-2021 while tourism-dependent jobs fell 79.1 percent, from 1.27 million to 266
-thousand. Their swings differ five-fold. Any contingency plan sized against a 6 percent
-shock is undersized against an 80 percent one.
+tables over the same decade, headline employment fell 5.5 % between 2019 and
+2021 while tourism-dependent jobs fell 79.1 %, from 1.27 million to 266
+thousand. Their swings differ five-fold. Any contingency plan sized against a 6 %
+shock is undersized against an 80 % one.
 
 **The aggregate recovery hides a redistribution.** Tourism-dependent employment
-reached 104.2 percent of its 2019 level by 2024, which reads as a full recovery. By
+reached 104.2 % of its 2019 level by 2024, which reads as a full recovery. By
 industry it is not. Travel agencies lost more than a third of their tourism-dependent
-jobs while culture and recreation gained a fifth, a spread of 57 percentage points.
+jobs while culture and recreation gained a fifth, a spread of 57 %age points.
 For three industries the two measures move in opposite directions, so the headline
 would rank the wrong winners and losers. A recovered total is a reason to re-target
 support, not to withdraw it.
@@ -97,7 +98,7 @@ need opposite instruments, and the quadrant view keeps them apart at a glance.
 
 **Demand is dangerously concentrated.** On the international side, the concentration
 index sat at the official high-concentration threshold in 2024, with one neighbouring
-country supplying 46.9 percent of arrivals out of roughly 195 source markets.
+country supplying 46.9 % of arrivals out of roughly 195 source markets.
 Domestically, a quarter of all trips never leave the traveller's home state, and East
 Malaysia is largely a separate market. Campaigns aimed at the wrong origin will not
 move demand.
@@ -105,7 +106,7 @@ move demand.
 **Every tourism-carrying industry pays below the national median.** Weighted by
 tourism-dependent employment, median pay in these industries averages RM1,985 against
 a national RM2,793. The largest employer, accommodation and food and beverage
-together, never exceeded 72 percent of the national median at any point between 2010
+together, never exceeded 72 % of the national median at any point between 2010
 and 2024. That is a fifteen-year structural position, not a pandemic effect, and it
 qualifies the allocation result rather than overturning it.
 
@@ -121,7 +122,7 @@ per-industry bounds, the optimum is a greedy fill in descending order of job den
 The dashboard therefore re-solves the model for any budget on a slider, and it
 reproduces the independently solved benchmark exactly at RM5 billion. Allocating by
 employment yield rather than by current spending shares creates 17.9 thousand more
-tourism-dependent jobs, a 55.7 percent uplift, and cuts the cost per job from RM155,231
+tourism-dependent jobs, a 55.7 % uplift, and cuts the cost per job from RM155,231
 to RM99,700. The page states its assumptions beside the chart: the model compares
 allocation logics, it is not a budget instruction.
 
@@ -156,12 +157,41 @@ online and offline assistants agree across all eleven chart datasets. Its only
 external reference is a web font, which falls back to system fonts without a
 connection.
 
+## Tech stack
+
+The dashboard is a modern TypeScript single-page application with no framework
+sprawl. Every one of the 23 visualizations is hand-built with D3 rather than pulled
+from a chart library, which is what allows the global cross-filtering and the design
+system to apply consistently.
+
+| Layer | Technology | Why it was chosen |
+|---|---|---|
+| UI framework | React 19 | Component model for 7 pages of tightly related views |
+| Language | TypeScript 6 | End-to-end type safety across client and serverless code |
+| Visualization | D3 v7 | Full control of every chart, needed for click-to-filter behavior across all 23 visuals |
+| Styling | Tailwind CSS v4 | One design system, single navy accent for values, red reserved for decline |
+| State | Zustand 5 | One global store holding the shared year, state and sector filters |
+| Build | Vite 8 with vite-plugin-singlefile | Bundles JS, CSS, images and the full data base into one offline HTML file |
+| Linting | oxlint | Fast static checks in a large component tree |
+| Backend | Vercel serverless functions (Node, `@vercel/node`) | The assistant endpoint, with zero infrastructure to manage |
+| AI | OpenRouter serving DeepSeek, OpenAI-compatible API | Swappable through three environment variables, with a deterministic fallback when unset |
+| Deployment | Vercel (hosted) plus the offline HTML artifact | Two deliverables from one codebase |
+
 ## Data provenance
 
-All data is official Malaysian statistics from six source families, harmonised into a
-single integrated base of 18 tables. That base is the only data artifact the dashboard
-reads, so no hidden transformation sits between the published statistics and a
-rendered chart.
+All data is official Malaysian statistics, collected from DOSM's own publishing
+channels. Time series such as labour force, population and the satellite-account
+tables were downloaded and scraped programmatically from the OpenDOSM bulk-data endpoints at
+[storage.dosm.gov.my](https://storage.dosm.gov.my), which is the machine-readable arm
+of the official [Department of Statistics Malaysia portal](https://www.dosm.gov.my).
+The Domestic Tourism Survey workbooks, including the state receipts tables and the
+origin-destination matrix, were downloaded from the
+[eStatistik portal](https://www.open.dosm.gov.my), and the Tourism Satellite Account
+tables were taken from DOSM's official publication release. Everything was then
+harmonised into a single integrated base of 18 tables.
+
+That base is the only data artifact the dashboard reads, so no hidden transformation
+sits between the published statistics and a rendered chart.
 
 | Source | Used for |
 |---|---|
@@ -172,7 +202,8 @@ rendered chart.
 | Population estimates | Visitors and nights per resident |
 | SDG indicator series | Indicators 8.9.1 and 12.b.1 |
 
-No external, scraped, proprietary or synthetic data enters the pipeline.
+No external, scraped-from-third-parties, proprietary or synthetic data enters the
+pipeline. Every series traces back to a DOSM publication.
 
 ## Validation and honest limits
 
@@ -193,4 +224,3 @@ types. The report documents these rejections as a model selection log, because a
 seasonal-naive predictor beating a fitted model is itself evidence for the volatility
 thesis. The study also makes no environmental sustainability claim, and explains that
 the official accounts needed to support one are not yet broken down to tourism.
-
