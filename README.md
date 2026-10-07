@@ -12,7 +12,7 @@ The dashboard follows that argument across seven pages and ends with a decision 
 rather than a stack of charts. It ships in two forms: a hosted web app on Vercel, and a
 single offline HTML file that opens by double-click with no server and no internet.
 
-| | |
+| Component | Note |
 |---|---|
 | Live | [vulnera-my.vercel.app](https://vulnera-my.vercel.app) |
 | Built with | React 19, TypeScript, D3 v7, Tailwind CSS, Zustand, Vite |
@@ -71,13 +71,15 @@ argument and no two pages can disagree about a number.
 Six findings carry the argument, and every number below is computed from the bundled
 data and traceable to a named DOSM source table.
 
-**The headline understates the shock fourteen-fold.** From the same two published
+**The headline understates the shock fourteen-fold.** 
+- From the same two published
 tables over the same decade, headline employment fell 5.5 % between 2019 and
 2021 while tourism-dependent jobs fell 79.1 %, from 1.27 million to 266
 thousand. Their swings differ five-fold. Any contingency plan sized against a 6 %
 shock is undersized against an 80 % one.
 
-**The aggregate recovery hides a redistribution.** Tourism-dependent employment
+**The aggregate recovery hides a redistribution.** 
+- Tourism-dependent employment
 reached 104.2 % of its 2019 level by 2024, which reads as a full recovery. By
 industry it is not. Travel agencies lost more than a third of their tourism-dependent
 jobs while culture and recreation gained a fifth, a spread of 57 %age points.
@@ -85,29 +87,33 @@ For three industries the two measures move in opposite directions, so the headli
 would rank the wrong winners and losers. A recovered total is a reason to re-target
 support, not to withdraw it.
 
-**Job density varies sixteen-fold.** A million ringgit spent in food and beverage
+**Job density varies sixteen-fold.** 
+- A million ringgit spent in food and beverage
 supports 11.6 tourism-dependent jobs. The same ringgit in fuel retail supports 0.7.
 The employment consequence of tourism spending is set as much by where it goes as by
 how large it is.
 
-**Exposure is not the same as crowding.** The dashboard scores all 16 states on a
+**Exposure is not the same as crowding.** 
+- The dashboard scores all 16 states on a
 composite vulnerability index built from income instability, incomplete recovery,
 external dependence and weak local capture, with weights stated openly and
 stress-tested. The most vulnerable states are not the busiest. Crowding and fragility
 need opposite instruments, and the quadrant view keeps them apart at a glance.
 
-**Demand is dangerously concentrated.** On the international side, the concentration
+**Demand is dangerously concentrated.** 
+- On the international side, the concentration
 index sat at the official high-concentration threshold in 2024, with one neighbouring
 country supplying 46.9 % of arrivals out of roughly 195 source markets.
 Domestically, a quarter of all trips never leave the traveller's home state, and East
 Malaysia is largely a separate market. Campaigns aimed at the wrong origin will not
 move demand.
 
-**Every tourism-carrying industry pays below the national median.** Weighted by
+**Every tourism-carrying industry pays below the national median.** 
+- Weighted by
 tourism-dependent employment, median pay in these industries averages RM1,985 against
-a national RM2,793. The largest employer, accommodation and food and beverage
-together, never exceeded 72 % of the national median at any point between 2010
-and 2024. That is a fifteen-year structural position, not a pandemic effect, and it
+a national RM2,793. The largest employer, accommodation and food and beverage categories
+together, never exceeded 72% of the national median at any point between 2010
+and 2024. That is a fifteen-year structural position and it
 qualifies the allocation result rather than overturning it.
 
 ## The simulation is a real optimisation model
