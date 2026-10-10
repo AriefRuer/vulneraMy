@@ -9,11 +9,11 @@ An interactive dashboard built for the DOSM Datathon 2026. Malaysia's official h
 
 ## The big idea
 
-DOSM's [Tourism Satellite Account 2024](https://www.dosm.gov.my/portal-main/release-content/tourism-satellite-account-2024) puts tourism employment in 2024 at 3.5 million people, 21.6% of all jobs. That headline counts everyone working in tourism industries, even if no visitor ever pays their wage.
+DOSM’s [Tourism Satellite Account 2024](https://www.dosm.gov.my/portal-main/release-content/tourism-satellite-account-2024) reports 3.5 million tourism jobs which is 21.6% of all jobs. But this is a broad count as it includes everyone employed in tourism-related industries, such as hotels, restaurants and transport, even if their particular job is not supported by visitor spending. A restaurant that mainly serves local residents, for example, still has its staff counted in this total.
 
-The same publication gives each industry's **tourism share**: the part of its business that comes from visitors. Multiply each industry's jobs by that share and add them up. The result is **tourism-dependent jobs**, the jobs that would disappear if visitors stopped coming. The formal name in the research report is *tourism-attributable employment*.
+Within the same publication, they provide a tourism share for each industry: the number of the share represents the percentage of the industry’s business that comes from visitors. To get a narrower measure, we multiply each industry’s jobs by its tourism share, then add the results. That gives the estimated number of jobs that depend on tourism spending, the same jobs that would disappear if visitors stopped coming. The research report calls this tourism-attributable employment.
 
-Both numbers come from the same two official tables. Only the question is different.
+Both numbers come from the same two official tables. They just answer different questions: 1) how many people work in tourism-related industries, versus 2) how many jobs are actually supported by tourism.
 
 | Window | Headline jobs | Tourism-dependent jobs |
 |---|---|---|
